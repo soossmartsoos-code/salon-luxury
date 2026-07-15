@@ -1,0 +1,13 @@
+{
+  "name": "salon-luxury",
+  "version": "1.0.0",
+  "description": "Salon Luxury Booking App",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

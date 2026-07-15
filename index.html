@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="X-DNS-Prefetch-Control" content="on">
+<link rel="dns-prefetch" href="https://salon-luxury-1b55b-default-rtdb.europe-west1.firebasedatabase.app">
+<link rel="dns-prefetch" href="https://firebasedatabase.app">
+<link rel="preconnect" href="https://salon-luxury-1b55b-default-rtdb.europe-west1.firebasedatabase.app" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:#f5f5f5;min-height:100vh;overflow-x:hidden;}
+:root{--primary:#DC143C;--primary-b:#4169E1;--dark-p:#8B0000;--dark-b:#1E3A5F;--light-p:#FF6B6B;--light-b:#87CEEB;--success:#28a745;--danger:#dc3545;--warning:#ffc107;--gray:#666;--white:#fff;}
+.animated-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);}
+.light-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.4;animation:float 8s ease-in-out infinite;}
+.light-orb:nth-child(1){width:300px;height:300px;background:rgba(220,20,60,0.3);top:-100px;right:-100px;animation-delay:0s;}
+.light-orb:nth-child(2){width:250px;height:250px;background:rgba(65,105,225,0.3);bottom:-80px;left:-80px;animation-delay:2s;}
+.light-orb:nth-child(3){width:200px;height:200px;background:rgba(255,107,138,0.2);top:50%;left:50%;animation-delay:4s;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-30px) rotate(180deg);}}
+.login-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;animation:fadeIn 0.8s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.logo-container{margin-bottom:20px;}
+.salon-title-l{font-size:28px;font-weight:900;color:var(--primary);margin-bottom:5px;text-shadow:2px 2px 4px rgba(0,0,0,0.1);}
+.welcome-text{font-size:16px;color:var(--gray);margin-bottom:30px;}
+.input-group{width:100%;max-width:400px;margin-bottom:15px;}
+.input-label{display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:5px;}
+.input-field{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit;transition:all 0.3s;background:var(--white);}
+.input-field:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(220,20,60,0.1);}
+.login-btn{width:100%;max-width:400px;padding:16px;background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);border:none;border-radius:12px;font-size:18px;font-weight:900;cursor:pointer;transition:all 0.3s;box-shadow:0 8px 25px rgba(220,20,60,0.3);position:relative;overflow:hidden;font-family:inherit;}
+.login-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);animation:shine 3s infinite;}
+@keyframes shine{0%{left:-100%;}100%{left:100%;}}
+.main-app{display:none;animation:fadeIn 0.8s;}
+.header{background:linear-gradient(135deg,var(--primary-b),var(--dark-b));padding:20px 15px;text-align:center;position:relative;overflow:hidden;box-shadow:0 6px 25px rgba(65,105,225,0.3);}
+.header::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);animation:pulse 4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.1);opacity:0.8;}}
+.header h1{color:var(--white);font-size:24px;font-weight:900;position:relative;z-index:1;}
+.header .sub{color:rgba(255,255,255,0.85);font-size:13px;position:relative;z-index:1;margin-top:2px;}
+.screen{display:none;padding:15px;padding-top:12px;}
+.screen.active{display:block;animation:fadeIn 0.3s;padding-bottom:80px;}
+.steps{display:flex;gap:6px;margin-bottom:15px;padding:0 5px;}
+.step{flex:1;text-align:center;padding:8px 4px;border-radius:10px;font-size:12px;font-weight:700;background:#eee;color:var(--gray);transition:all 0.3s ease;border:2px solid transparent;}
+.step.active{background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);box-shadow:0 3px 10px rgba(220,20,60,0.3);border-color:var(--primary);}
+.step.done{background:var(--success);color:var(--white);border-color:var(--success);}
+.step-num{display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;text-align:center;font-size:11px;background:rgba(255,255,255,0.3);margin-left:4px;}
+.step.active .step-num{background:rgba(255,255,255,0.5);}
+.step.done .step-num{background:rgba(255,255,255,0.4);}
+.step-content{display:none;animation:fadeIn 0.4s;}
+.step-content.active{display:block;}
+.filter-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:5px 0 10px;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.filter-tab{padding:7px 16px;background:var(--white);border:2px solid #ddd;border-radius:25px;font-weight:700;cursor:pointer;transition:all 0.3s;white-space:nowrap;font-size:12px;flex-shrink:0;}
+.filter-tab.active{background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);border-color:transparent;box-shadow:0 3px 12px rgba(220,20,60,0.3);}
+.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;}
+.service-card{background:var(--white);border-radius:14px;padding:18px 10px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,0.04);transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden;border:2px solid transparent;}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.1);border-color:var(--light-p);}
+.service-card.selected{border-color:var(--primary);background:rgba(220,20,60,0.03);}
+.service-card.selected::after{content:'\2713';position:absolute;top:5px;left:5px;width:20px;height:20px;background:var(--success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;line-height:20px;}
+.service-icon-svg{width:45px;height:45px;margin:0 auto 8px;display:block;transition:all 0.4s;}
+.service-card:hover .service-icon-svg{transform:rotateY(180deg) scale(1.1);}
+.service-name{font-size:13px;font-weight:800;margin-bottom:5px;}
+.price-badge{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--light-p));color:var(--white);padding:3px 10px;border-radius:12px;font-weight:900;font-size:12px;}
+.sel-summary{background:var(--white);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:none;}
+.sel-item{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;}
+.sel-item:last-child{border-bottom:none;}
+.sel-total{display:flex;justify-content:space-between;font-weight:900;font-size:15px;color:var(--primary);padding-top:6px;margin-top:6px;border-top:2px solid var(--primary);}
+.emp-list{display:flex;flex-direction:column;gap:8px;margin-bottom:15px;}
+.emp-card{background:var(--white);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 10px rgba(0,0,0,0.04);transition:all 0.3s;cursor:pointer;border:2px solid transparent;}
+.emp-card:hover{transform:translateX(-4px);box-shadow:0 6px 18px rgba(0,0,0,0.1);}
+.emp-card.selected{border-color:var(--primary);background:rgba(220,20,60,0.03);}
+.emp-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--primary-b),var(--primary));display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--white);flex-shrink:0;}
+.emp-info{flex:1;}
+.emp-name{font-size:15px;font-weight:900;margin-bottom:2px;}
+.emp-detail{font-size:12px;color:var(--gray);}
+.stars{color:#FFD700;font-size:13px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:15px;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--white);border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.3s;border:2px solid transparent;}
+.cal-day:hover{background:var(--light-b);transform:scale(1.1);}
+.cal-day.selected{background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);}
+.cal-day.closed{opacity:0.4;cursor:not-allowed;background:#eee;border-color:#ddd;}
+.cal-day.closed:hover{transform:none;background:#eee;}
+.time-slots{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;}
+.time-slot{padding:8px 14px;background:var(--white);border:2px solid #e0e0e0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;transition:all 0.3s;}
+.time-slot:hover{transform:translateY(-2px);box-shadow:0 3px 8px rgba(0,0,0,0.06);}
+.time-slot.selected{background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);border-color:var(--primary);}
+.time-slot.cancelled{opacity:0.4;text-decoration:line-through;cursor:not-allowed;}
+.next-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--primary),var(--dark-p));color:var(--white);border:none;border-radius:12px;font-size:18px;font-weight:900;cursor:pointer;transition:all 0.3s;box-shadow:0 6px 20px rgba(220,20,60,0.3);margin-top:8px;display:none;font-family:inherit;position:relative;z-index:10;}
+.next-btn:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(220,20,60,0.5);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);padding:8px 5px;padding-bottom:env(safe-area-inset-bottom);display:flex;justify-content:space-around;box-shadow:0 -4px 25px rgba(0,0,0,0.08);z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:all 0.3s;padding:5px 15px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:10px;font-weight:700;color:var(--gray);}
+.nav-item:hover{background:rgba(65,105,225,0.08);}
+.nav-item.active{color:var(--primary);}
+.nav-icon{width:22px;height:22px;}
+.cm-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(5px);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.cm-content{background:var(--white);border-radius:25px;padding:30px 20px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.2);animation:slideUp 0.4s;position:relative;overflow:hidden;}
+.cm-content::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--primary),var(--primary-b));}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.bell-svg{width:60px;height:60px;margin:0 auto 12px;display:block;animation:ring 2s ease-in-out infinite;}
+@keyframes ring{0%,100%{transform:rotate(0deg);}25%{transform:rotate(15deg);}75%{transform:rotate(-15deg);}}
+.cm-title{font-size:20px;font-weight:900;color:var(--primary);margin-bottom:10px;}
+.cm-text{font-size:13px;color:var(--gray);margin-bottom:15px;}
+.summary{background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:15px;text-align:right;}
+.sum-row{display:flex;justify-content:space-between;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #eee;font-size:13px;}
+.sum-row:last-child{border-bottom:none;}
+.sum-label{font-weight:700;}
+.sum-value{color:var(--primary-b);font-weight:700;}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--primary);color:var(--white);padding:10px 20px;border-radius:10px;font-weight:700;font-size:14px;z-index:9999;animation:fadeInOut 2s ease;box-shadow:0 5px 20px rgba(220,20,60,0.3);}
+@keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(-20px);}15%{opacity:1;}85%{opacity:1;}100%{opacity:0;}}
+#admin-view{display:none;padding:15px;padding-bottom:100px;max-width:600px;margin:0 auto;}
+.admin-header{background:linear-gradient(135deg,var(--dark-b),var(--gray));padding:20px;border-radius:15px;text-align:center;color:var(--white);margin-bottom:15px;}
+.admin-header h1{font-size:20px;font-weight:900;}
+.admin-card{background:var(--white);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.05);}
+.admin-card-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--light-p));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--white);flex-shrink:0;}
+.admin-card-title{font-weight:900;font-size:14px;}
+.admin-card-sub{font-size:11px;color:var(--gray);margin-top:2px;}
+.edit-item{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.edit-item-info{flex:1;}
+.edit-item-name{font-weight:900;font-size:13px;}
+.edit-item-detail{font-size:11px;color:var(--gray);margin-top:2px;}
+.delete-btn{background:var(--danger);color:#fff;border:none;padding:4px 8px;border-radius:6px;font-weight:700;font-size:10px;cursor:pointer;}
+#admin-view .login-btn::before{display:none;}
+.cancel-booking-btn{background:var(--danger);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer;width:100%;margin-top:6px;font-family:inherit;transition:all 0.3s;}
+.cancel-booking-btn:hover{background:#a71d2a;transform:translateY(-2px);}
+.day-card{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:10px;padding:10px;margin-bottom:8px;}
+.day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.day-name{font-weight:900;font-size:13px;}
+.day-toggle{width:40px;height:22px;border-radius:11px;background:#ddd;border:none;cursor:pointer;position:relative;transition:0.3s;}
+.day-toggle.on{background:var(--success);}
+.day-toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;right:3px;transition:0.3s;}
+.day-toggle.on::after{right:21px;}
+.confirm-btn{all:unset;cursor:pointer;width:100%;padding:10px;background:linear-gradient(135deg,var(--primary),var(--dark-p));color:#fff;border-radius:10px;font-weight:900;font-size:13px;text-align:center;display:block;margin-bottom:8px;font-family:inherit;}
+</style>
+</head>
+<body>
+
+<div class="animated-bg"><div class="light-orb"></div><div class="light-orb"></div><div class="light-orb"></div></div>
+
+<div class="login-page" id="loginPage">
+<div class="logo-container"><img src="https://i.ibb.co/RLH1rHj/1783800775.png" alt="Salon Luxury Logo" style="width:200px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2);"></div>
+<h1 class="salon-title-l" id="loginSalonName">Salon Luxury</h1>
+<p class="welcome-text">مرحباً بكم</p>
+<div class="input-group"><label class="input-label">الاسم</label><input type="text" class="input-field" id="customerName" placeholder="أدخل اسمك الكامل"></div>
+<div class="input-group"><label class="input-label">رقم الهاتف</label><input type="tel" class="input-field" id="customerPhone" placeholder="07XXXXXXXXX"></div>
+<button class="login-btn" onclick="doLogin()">تسجيل الدخول</button>
+</div>
+
+<div class="main-app" id="mainApp">
+<div class="header"><img src="https://i.ibb.co/RLH1rHj/1783800775.png" alt="Salon Luxury Logo" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;"><h1 id="mainTitle">صالون الفخامة</h1><div class="sub" id="mainPhone">📞 0791015800</div><div id="fbStatus" style="margin-top:6px;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;background:#ffc107;color:#000;display:inline-block;">🔄 جاري التحقق...</div></div>
+
+<div id="appWatermark" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;display:flex;align-items:center;justify-content:center;"><img src="https://i.ibb.co/RLH1rHj/1783800775.png" alt="" style="width:300px;height:300px;border-radius:50%;opacity:0.06;object-fit:cover;"></div>
+
+<div class="screen active" id="screen-main">
+<div class="steps" id="stepIndicators">
+<div class="step active" id="s1"><span class="step-num">1</span> الخدمات</div>
+<div class="step" id="s2"><span class="step-num">2</span> الحلاق</div>
+<div class="step" id="s3"><span class="step-num">3</span> الحجز</div>
+</div>
+
+<div class="step-content active" id="step1">
+<div class="filter-tabs" id="filterTabs"></div>
+<div class="services-grid" id="servicesGrid"></div>
+<div class="sel-summary" id="selSummary"><div style="font-weight:900;font-size:14px;margin-bottom:6px;color:var(--dark-b);">✂️ الخدمات المحددة</div><div id="selList"></div><div class="sel-total"><span>المجموع</span><span id="selTotal">0 د.أ</span></div></div>
+<button class="next-btn" id="toStep2" onclick="goStep2()">تأكيد الخدمات ←</button>
+</div>
+
+<div class="step-content" id="step2">
+<div class="emp-list" id="empList"></div>
+<button class="next-btn" id="toStep3">تأكيد الحلاق ←</button>
+</div>
+
+<div class="step-content" id="step3">
+<div class="cal-grid" id="calGrid"></div>
+<div id="morningLabel" style="font-weight:900;font-size:14px;margin-bottom:8px;padding-right:10px;border-right:3px solid var(--primary-b);color:var(--dark-b);">🌅 صباحاً</div>
+<div class="time-slots" id="morningSlots"></div>
+<div id="eveningLabel" style="font-weight:900;font-size:14px;margin-bottom:8px;padding-right:10px;border-right:3px solid var(--primary);color:var(--dark-b);">🌆 مساءً</div>
+<div class="time-slots" id="eveningSlots"></div>
+<button class="next-btn" id="toConfirm" onclick="doConfirmAll()">تأكيد الحجز ←</button>
+</div>
+</div>
+
+<div class="screen" id="screen-account" style="padding:15px;">
+<div class="emp-card" style="cursor:default;border-color:var(--primary-b);margin-bottom:15px;">
+<div class="emp-avatar" style="font-size:26px;">👤</div>
+<div class="emp-info"><div class="emp-name" id="profName">ضيف</div><div class="emp-detail" id="profPhone">📱 -</div></div>
+</div>
+<h3 style="font-size:15px;margin-bottom:8px;">📋 حجوزاتي</h3><div id="myBookingsList"></div>
+<div class="admin-card" onclick="showFavorites()"><div class="admin-card-icon">❤️</div><div class="admin-card-info"><div class="admin-card-title">المفضلة</div><div class="admin-card-sub">خدماتك المفضلة</div></div></div>
+<div class="admin-card" onclick="contactSalon()"><div class="admin-card-icon">💬</div><div class="admin-card-info"><div class="admin-card-title">تواصل معنا</div><div class="admin-card-sub">واتساب</div></div></div>
+</div>
+</div>
+
+<div id="admin-view">
+<div class="admin-header"><h1 id="adminTitle">⚙️ لوحة التحكم</h1><div id="adminPhone">📞 -</div></div>
+<button class="confirm-btn" style="background:linear-gradient(135deg,#666,#444);margin-bottom:10px;" onclick="toggleView()">🔄 عرض التطبيق</button>
+<div class="admin-card" onclick="editAdminName()"><div class="admin-card-icon">✏️</div><div class="admin-card-info"><div class="admin-card-title">اسم الصالون</div><div class="admin-card-sub" id="adminDispName">-</div></div></div>
+<div class="admin-card" onclick="editAdminPhone()"><div class="admin-card-icon">📱</div><div class="admin-card-info"><div class="admin-card-title">رقم الصالون</div><div class="admin-card-sub" id="adminDispPhone">-</div></div></div>
+<h3 style="margin:12px 0 8px;font-size:15px;">✂️ إدارة الخدمات</h3><button class="confirm-btn" onclick="addService()">+ إضافة خدمة</button>
+<div id="adminServicesList" style="margin-top:8px;"></div>
+<h3 style="margin:12px 0 8px;font-size:15px;">👥 إدارة الموظفين</h3><button class="confirm-btn" onclick="addEmployee()">+ إضافة موظف</button>
+<div id="adminEmployeesList" style="margin-top:8px;"></div>
+<h3 style="margin:12px 0 8px;font-size:15px;">⏰ أوقات العمل</h3><div id="adminHoursList"></div>
+<h3 style="margin:12px 0 8px;font-size:15px;">📅 الحجوزات</h3><button onclick="adminCancelAll()" style="width:100%;padding:10px;background:linear-gradient(135deg,var(--danger),#a71d2a);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:10px;font-family:inherit;">🗑️ إلغاء كل الحجوزات</button><div id="adminBookingsList"></div>
+<button class="confirm-btn" style="background:linear-gradient(135deg,var(--success),#1e7e34);margin-top:10px;" onclick="exportData()">📥 تصدير البيانات</button>
+<button class="confirm-btn" style="background:linear-gradient(135deg,var(--danger),#a71d2a);margin-top:8px;" onclick="resetData()">🗑️ إعادة تعيين</button>
+</div>
+
+<div class="cm-overlay" id="confirmModal">
+<div class="cm-content">
+<svg class="bell-svg" viewBox="0 0 24 24" fill="none" stroke="#DC143C" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+<h2 class="cm-title">✅ تم تأكيد الحجز!</h2>
+<p class="cm-text">⏰ يرجى الوصول قبل <strong>10 دقائق</strong> من موعدك<br>يمكنك إرسال الحجز عبر واتساب للصالون</p>
+<div class="summary">
+<div class="sum-row"><span class="sum-label">الخدمة:</span><span class="sum-value" id="sumService">-</span></div>
+<div class="sum-row"><span class="sum-label">التاريخ:</span><span class="sum-value" id="sumDate">-</span></div>
+<div class="sum-row"><span class="sum-label">الوقت:</span><span class="sum-value" id="sumTime">-</span></div>
+<div class="sum-row"><span class="sum-label">الحلاق:</span><span class="sum-value" id="sumBarber">-</span></div>
+<div class="sum-row"><span class="sum-label">السعر:</span><span class="sum-value" id="sumPrice" style="color:var(--primary);">-</span></div>
+</div>
+<button class="login-btn" style="max-width:none;background:linear-gradient(135deg,#25d366,#128c7e);margin-bottom:8px;" onclick="openWhatsApp()">📱 إرسال الحجز عبر واتساب</button>
+<button class="login-btn" style="max-width:none;" onclick="closeCM()">✅ موافق، إرسال الحجز</button>
+</div>
+</div>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+<button class="nav-item active" onclick="switchNav(this,'screen-main')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/></svg><span>الرئيسية</span></button>
+<button class="nav-item" onclick="switchNav(this,'screen-account')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>حسابي</span></button>
+</div>
+
+<script>
+(function(){
+var t={n:'صالون الفخامة',ph:'0791015800'};
+var p=new URLSearchParams(location.search);
+var slug=p.get('salon')||'alasali';
+var isAdmin=p.get('admin')==='true';
+var salons={'ayman-albarnes':{n:'Ayman Al-Barnes',ph:'0780033499'},'diva-amer':{n:'Diva Amer',ph:'0788832879'},'abdallah-alkhashan':{n:'Abdallah Al-Khashan',ph:'0799932214'},'raad-amr':{n:'Raad & Amro',ph:'0786782591'},'grand-salon':{n:'Grand Salon',ph:'0791015800'},'feras-afandi':{n:'Feras Afandi',ph:'0798055808'},'new-style':{n:'New Style Saloon',ph:'0795342136'},'albaghdadi':{n:'Al-Baghdadi Salon',ph:'0795335575'},'anwar-salon':{n:'Anwar Saloon',ph:'0795355215'},'alfahad':{n:'Al Fahed Barber',ph:'0795999541'},'sama-amman':{n:'Sama Amman',ph:'0790085646'},'alaqad':{n:'Alaqad Salon',ph:'0796131714'},'alasali':{n:'Al-Asali Salon',ph:'0791015800'},'nidal':{n:'Saloon Nidal',ph:'0777177446'},'ibarber':{n:'iBarber',ph:'0795471791'},'salon-friends':{n:'Salon Friends',ph:'0796880777'},'bikers-salon':{n:'Bikers Salon',ph:'0786908075'}};
+if(salons[slug]){t.n=salons[slug].n;t.ph=salons[slug].ph;}
+
+var ds=[{icon:'✂️',name:'قص شعر كلاسيكي',price:10,category:'haircut'},{icon:'💎',name:'قص شعر VIP',price:15,category:'haircut'},{icon:'🪒',name:'حلاقة ذقن',price:5,category:'beard'},{icon:'🧔',name:'تهذيب لحية',price:7,category:'beard'},{icon:'🎨',name:'صبغة شعر',price:25,category:'color'},{icon:'✨',name:'هايلايت',price:30,category:'color'},{icon:'💆',name:'تنظيف بشرة',price:15,category:'skincare'},{icon:'🧖',name:'ماسك وجه',price:20,category:'skincare'},{icon:'💇',name:'تصفيف شعر',price:12,category:'styling'},{icon:'💆‍♂️',name:'تدليك فروة الرأس',price:18,category:'skincare'},{icon:'🔥',name:'جليد شعر',price:22,category:'color'},{icon:'💆‍♀️',name:'عناية بالبشرة',price:25,category:'skincare'}];
+var de=[{name:'أحمد محمد',role:'حلاق أول',rating:4.9,icon:'👨‍🦱',phone:'0791234567',available:true},{name:'محمد علي',role:'خبير صبغات',rating:4.8,icon:'🎨',phone:'0792345678',available:true},{name:'عمر خالد',role:'عناية بشرة',rating:4.7,icon:'💆',phone:'0793456789',available:false},{name:'خالد سعيد',role:'متخصص لحية',rating:4.9,icon:'🧔',phone:'0794567890',available:true},{name:'يوسف أحمد',role:'حلاق محترف',rating:4.8,icon:'👨‍🦱',phone:'0795678901',available:true}];
+var dh={'Saturday':{open:'09:00',close:'21:00',cancelled:[]},'Sunday':{open:'09:00',close:'21:00',cancelled:[]},'Monday':{open:'09:00',close:'21:00',cancelled:[]},'Tuesday':{open:'09:00',close:'21:00',cancelled:[]},'Wednesday':{open:'09:00',close:'21:00',cancelled:[]},'Thursday':{open:'09:00',close:'21:00',cancelled:[]},'Friday':{open:'13:00',close:'21:00',cancelled:[]}};
+var dAr={'Saturday':'السبت','Sunday':'الأحد','Monday':'الاثنين','Tuesday':'الثلاثاء','Wednesday':'الأربعاء','Thursday':'الخميس','Friday':'الجمعة'};
+
+function gs(key,def){try{var d=localStorage.getItem('salon_'+slug+'_'+key);return d?JSON.parse(d):def;}catch(e){return def;}}
+function ss(key,val){try{localStorage.setItem('salon_'+slug+'_'+key,JSON.stringify(val));}catch(e){}}
+
+var services=JSON.parse(JSON.stringify(ds));
+var employees=JSON.parse(JSON.stringify(de));
+var wh=JSON.parse(JSON.stringify(dh));
+var userBookings=gs('userBookings',[]);
+var favorites=gs('favorites',[]);
+var userName=gs('userName','');
+var userPhone=gs('userPhone','');
+var sn=gs('salonName','');var sp=gs('salonPhone','');
+if(sn)t.n=sn;if(sp)t.ph=sp;
+var sh=gs('hours',null);if(sh)wh=sh;
+
+function playSound(type){try{var ctx=new(window.AudioContext||window.webkitAudioContext)();var osc=ctx.createOscillator();var g=ctx.createGain();osc.connect(g);g.connect(ctx.destination);if(type==='scissor'){osc.frequency.value=800;g.gain.setValueAtTime(0.08,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.12);osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.12);}else{osc.frequency.value=600;g.gain.setValueAtTime(0.08,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.05);osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.05);}}catch(e){}}
+
+function svgIcon(type){
+var m={
+haircut:'<path d="M26 30 Q28 24 34 22 L38 22 Q44 24 46 30" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M34 22 L34 14" stroke="#DC143C" stroke-width="2.5" stroke-linecap="round"/><path d="M38 22 L38 14" stroke="#DC143C" stroke-width="2.5" stroke-linecap="round"/><circle cx="36" cy="34" r="3.5" fill="#DC143C"/><path d="M26 30 L22 48" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M46 30 L50 48" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 28 C68 28 74 34 74 42 C74 50 68 56 60 56 L60 62" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M54 62 L66 62" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/>',
+beard:'<path d="M32 58 L28 76" stroke="#DC143C" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M28 76 Q26 82 30 84 L36 84 Q38 82 36 78" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M32 58 Q34 42 50 38 Q66 42 68 58" stroke="#DC143C" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M50 38 L50 30" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/><path d="M44 28 Q50 24 56 28" stroke="#DC143C" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+color:'<circle cx="50" cy="50" r="20" fill="none" stroke="#DC143C" stroke-width="3"/><circle cx="50" cy="50" r="12" fill="#DC143C" opacity="0.3"/><path d="M50 30 L50 20" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/><path d="M50 80 L50 70" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/><path d="M30 50 L20 50" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/><path d="M80 50 L70 50" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/>',
+skincare:'<ellipse cx="50" cy="50" rx="22" ry="26" fill="none" stroke="#DC143C" stroke-width="3"/><path d="M35 42 Q50 35 65 42" stroke="#DC143C" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="40" cy="52" r="3" fill="#DC143C" opacity="0.4"/><circle cx="60" cy="52" r="3" fill="#DC143C" opacity="0.4"/><path d="M42 62 Q50 68 58 62" stroke="#DC143C" stroke-width="2" fill="none" stroke-linecap="round"/>',
+styling:'<path d="M30 70 L30 40 Q30 25 50 25 Q70 25 70 40 L70 70" stroke="#DC143C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M25 70 L75 70" stroke="#DC143C" stroke-width="3" stroke-linecap="round"/><path d="M40 45 L40 55" stroke="#DC143C" stroke-width="2" stroke-linecap="round"/><path d="M50 42 L50 58" stroke="#DC143C" stroke-width="2" stroke-linecap="round"/><path d="M60 45 L60 55" stroke="#DC143C" stroke-width="2" stroke-linecap="round"/>'
+};
+return m[type]||m.haircut;}
+
+var FB_PROXY=window.location.hostname.includes('netlify')?'/.netlify/functions/proxy':'/api/proxy';
+var FB_PATH='/salons/'+slug;
+var appReady=false;var fbHash='';
+var bookings={};var fbOnline=false,fbChecked=false,fbRetryCount=0,fbRetryMax=5,fbPollTimer=null;
+
+function applyFB(d){if(!d)return;try{if(d.services&&Array.isArray(d.services)){services=d.services;ss('services',services);}if(d.employees&&Array.isArray(d.employees)){employees=d.employees;ss('employees',employees);}if(d.hours&&typeof d.hours==='object'){Object.keys(d.hours).forEach(function(k){if(!d.hours[k].cancelled)d.hours[k].cancelled=[];});wh=d.hours;ss('hours',wh);}if(d.salonName&&typeof d.salonName==='string'){t.n=d.salonName;ss('salonName',t.n);}if(d.salonPhone&&typeof d.salonPhone==='string'){t.ph=d.salonPhone;ss('salonPhone',t.ph);}}catch(e){console.warn('applyFB',e);}}
+
+function setFbStatus(online){fbOnline=online;fbChecked=true;var el=document.getElementById('fbStatus');if(el){el.textContent=online?'☁️ متصل بالسحابة':'📴 اضغط للإعادة ('+fbRetryCount+'/'+fbRetryMax+')';el.style.background=online?'#28a745':'#ffc107';el.style.color='#fff';el.onclick=online?null:function(){el.textContent='🔄 جاري الاتصال...';el.style.background='#666';fbRetryCount=0;initFB();};}}
+
+function fbFetch(path,method,body){
+var isGet=!method||method==='GET';
+var url=FB_PROXY+'?path='+encodeURIComponent(path)+(isGet?'&_t='+Date.now():'')+(method&&method!=='GET'?'&method='+method:'');
+var opts={method:method||'GET',headers:{'Content-Type':'application/json'},cache:'no-store'};
+if(body)opts.body=JSON.stringify(body);
+return fetch(url,opts).then(function(r){return r.text();}).then(function(txt){try{return JSON.parse(txt);}catch(e){return null;}}).catch(function(e){console.error('fbFetch error:',e);return null;});}
+
+function initFB(){
+var lsHours=gs('hours',null);var lsSvc=gs('services',null);var lsEmp=gs('employees',null);
+if(lsHours){wh=lsHours;}if(lsSvc){services=lsSvc;}if(lsEmp){employees=lsEmp;}
+if(appReady){if(isAdmin)renderAdmin();else{renderSvc();renderCats();if(selDate)renderTimeSlots();}renderCal();}
+
+fbFetch(FB_PATH).then(function(d){
+if(d){
+setFbStatus(true);
+applyFB(d);
+if(appReady){if(isAdmin)renderAdmin();else{renderSvc();renderCats();if(selDate)renderTimeSlots();}renderCal();}
+if(d.bookings)bookings=d.bookings;
+if(appReady){if(isAdmin&&document.getElementById('admin-view').style.display==='block')renderAdminBookings();}
+if(fbPollTimer)clearInterval(fbPollTimer);
+fbPollTimer=setInterval(function(){fbFetch(FB_PATH).then(function(nd){if(!nd)return;var h=JSON.stringify(nd);if(h===fbHash)return;fbHash=h;applyFB(nd);if(appReady){if(isAdmin)renderAdmin();else{renderSvc();renderCats();if(selDate)renderTimeSlots();}renderCal();}if(nd.bookings){var cancelled=gs('cancelled',[]);Object.keys(nd.bookings).forEach(function(k){if(nd.bookings[k].status==='cancelled'&&cancelled.indexOf(k)===-1){cancelled.push(k);ss('cancelled',cancelled);}if(cancelled.indexOf(k)!==-1){nd.bookings[k].status='cancelled';}else if(bookings[k]&&bookings[k].status==='cancelled'&&nd.bookings[k].status!=='cancelled'){nd.bookings[k].status='cancelled';}});bookings=nd.bookings;if(isAdmin&&document.getElementById('admin-view').style.display==='block')renderAdminBookings();renderCustomerBookings();}});},5000);
+}else if(fbRetryCount<fbRetryMax){fbRetryCount++;var delay=Math.min(1000*Math.pow(2,fbRetryCount-1),8000);setTimeout(initFB,delay);}
+}).catch(function(e){console.warn('FB',e);setFbStatus(false);});}
+
+initFB();
+
+var selSvcs=[];var selEmp=null;var selDate=null;var selTime=null;
+function so(){ss('services',services);ss('employees',employees);ss('hours',wh);fbHash='';fbFetch(FB_PATH,'PUT',{services:services,employees:employees,hours:wh,salonName:t.n,salonPhone:t.ph}).then(function(d){if(d)toast('☁️ تم الحفظ في السحابة');else toast('⚠️ تم الحفظ محلياً فقط');}).catch(function(){toast('⚠️ تم الحفظ محلياً فقط');});}
+function toast(m){var el=document.createElement('div');el.className='toast';el.textContent=m;document.body.appendChild(el);setTimeout(function(){el.remove();},2000);}
+
+var currentStep=1;
+function goStep(n){
+currentStep=n;
+document.querySelectorAll('.step').forEach(function(s,i){s.classList.toggle('active',i+1===n);s.classList.toggle('done',i+1<n);});
+document.querySelectorAll('.step-content').forEach(function(c,i){c.classList.toggle('active',i+1===n);});
+window.scrollTo(0,0);
+}
+
+function renderSvc(){
+var g=document.getElementById('servicesGrid');
+if(!g)return;
+g.innerHTML=services.map(function(s){
+var sel=selSvcs.some(function(x){return x.name===s.name;});
+return '<div class="service-card'+(sel?' selected':'')+'" data-cat="'+s.category+'" onclick="toggleSvc(\''+s.name.replace(/'/g,"\\'")+'\','+s.price+')">'+
+'<svg class="service-icon-svg" viewBox="0 0 100 100">'+svgIcon(s.category)+'</svg>'+
+'<div class="service-name">'+s.name+'</div><div class="price-badge">'+s.price+' د.أ</div></div>';
+}).join('');
+updateSummary();
+}
+function toggleSvc(name,price){
+playSound('scissor');
+var ex=selSvcs.findIndex(function(s){return s.name===name;});
+if(ex>-1){selSvcs.splice(ex,1);toast('تم إزالة: '+name);}
+else{selSvcs.push({name:name,price:price});toast('تم اختيار: '+name);}
+renderSvc();
+}
+function updateSummary(){
+var l=document.getElementById('selList');var s=document.getElementById('selSummary');
+if(selSvcs.length===0){s.style.display='none';document.getElementById('toStep2').style.display='none';return;}
+s.style.display='block';document.getElementById('toStep2').style.display='block';
+l.innerHTML=selSvcs.map(function(sv){return '<div class="sel-item"><span>'+sv.name+'</span><span style="color:var(--primary);font-weight:700;">'+sv.price+' د.أ</span></div>';}).join('');
+document.getElementById('selTotal').textContent=selSvcs.reduce(function(s,x){return s+x.price;},0)+' د.أ';
+}
+function goStep2(){
+if(selSvcs.length===0){toast('الرجاء اختيار خدمة');return;}
+playSound('click');renderEmps();goStep(2);document.getElementById('toStep3').style.display='none';
+}
+function renderCats(){
+var el=document.getElementById('filterTabs');
+if(!el)return;
+var c=[{k:'all',l:'🎯 الكل'},{k:'haircut',l:'✂️ قص الشعر'},{k:'beard',l:'🧔 الذقن'},{k:'color',l:'🎨 صبغة'},{k:'skincare',l:'💆 بشرة'},{k:'styling',l:'💇 تصفيف'}];
+el.innerHTML=c.map(function(x,i){return '<div class="filter-tab'+(i===0?' active':'')+'" onclick="filterCat(this,\''+x.k+'\')">'+x.l+'</div>';}).join('');
+}
+function filterCat(btn,cat){playSound('click');document.querySelectorAll('.filter-tab').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');document.querySelectorAll('.service-card').forEach(function(c){if(cat==='all'||c.dataset.cat===cat)c.style.display='';else c.style.display='none';});}
+
+function renderEmps(){
+var l=document.getElementById('empList');if(!l)return;
+var avail=employees.filter(function(e){return e.available!==false;});
+l.innerHTML=avail.map(function(e){
+var oIdx=employees.indexOf(e);
+var st='★'.repeat(Math.floor(e.rating))+(e.rating%1>=0.5?'½':'');
+return '<div class="emp-card" onclick="pickEmp('+oIdx+',this)"><div class="emp-avatar">'+e.icon+'</div><div class="emp-info"><div class="emp-name">'+e.name+'</div><div class="emp-detail"><span class="stars">'+st+'</span> '+e.rating+' · '+e.role+'</div></div></div>';
+}).join('');
+selEmp=null;document.getElementById('toStep3').style.display='none';
+}
+function pickEmp(i,el){
+playSound('click');
+selEmp=employees[i];
+document.querySelectorAll('#empList .emp-card').forEach(function(c){c.classList.remove('selected');});
+el.classList.add('selected');
+toast('تم اختيار: '+selEmp.name);
+goStep3();
+}
+function goStep3(){
+if(!selEmp){toast('الرجاء اختيار الحلاق');return;}
+playSound('click');renderCal();goStep(3);selDate=null;selTime=null;document.getElementById('toConfirm').style.display='none';
+}
+
+function renderCal(){
+var g=document.getElementById('calGrid');if(!g)return;
+var today=new Date();var dayMap={0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday'};
+g.innerHTML='';
+for(var i=0;i<7;i++){
+var d=new Date(today);d.setDate(today.getDate()+i);var dk=dayMap[d.getDay()];var dd=d.getDate();
+var lbl=i===0?'اليوم':i===1?'غداً':['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'][d.getDay()];
+var isOpen=wh[dk]&&wh[dk].open?true:false;
+var dateKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+var el=document.createElement('div');el.className='cal-day'+(isOpen?'':' closed');
+el.innerHTML='<div style="font-size:16px;font-weight:900;">'+dd+'</div><div style="font-size:9px;opacity:0.7;margin-top:1px;">'+(isOpen?lbl:'مغلق')+'</div>';
+el.dataset.dk=dk;el.dataset.lbl=lbl;el.dataset.dateKey=dateKey;
+el.onclick=(function(el,isOpen){return function(){if(isOpen)selectCalDay(el);};})(el,isOpen);
+g.appendChild(el);
+}
+renderTimeSlots();
+}
+function selectCalDay(el){playSound('click');document.querySelectorAll('.cal-day').forEach(function(d){d.classList.remove('selected');});el.classList.add('selected');selDate={dk:el.dataset.dk,lbl:el.dataset.lbl,dd:el.querySelector('div').textContent,dateKey:el.dataset.dateKey};renderTimeSlots();}
+function renderTimeSlots(){
+if(!selDate)return;
+var prevTime=selTime;
+var h=wh[selDate.dk]||{open:'09:00',close:'21:00',cancelled:[]};if(!h.cancelled)h.cancelled=[];
+var ms=document.getElementById('morningSlots');var es=document.getElementById('eveningSlots');
+ms.innerHTML='';es.innerHTML='';
+var now=new Date();var todayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+var isToday=selDate.dateKey===todayKey;
+function isPast(t){if(!isToday)return false;var parts=t.split(':').map(Number);return parts[0]<now.getHours()||(parts[0]===now.getHours()&&parts[1]<=now.getMinutes());}
+function isBooked(t){if(!bookings||!selEmp)return false;return Object.values(bookings).some(function(b){return b.dateKey===selDate.dateKey&&b.employee===selEmp.name&&b.time===t&&b.status!=='cancelled';});}
+var parts=h.open.split(':').map(Number);
+var oH=parts[0],oM=parts[1];
+parts=h.close.split(':').map(Number);
+var cH=parts[0],cM=parts[1];
+var openMin=oH*60+oM;
+var closeMin=cH*60+cM;
+var midMin=13*60;
+var hr=oH,mi=oM;
+var morningEnd=Math.min(midMin,closeMin);
+var foundPrev=false;
+while(hr*60+mi<=morningEnd){
+var t=String(hr).padStart(2,'0')+':'+String(mi).padStart(2,'0');
+var can=h.cancelled.includes(t)||isBooked(t)||isPast(t);
+var el=document.createElement('div');el.className='time-slot'+(can?' cancelled':'');el.textContent=(hr>12?hr-12:hr)+':'+String(mi).padStart(2,'0')+' '+(hr>=12?'م':'ص');
+if(!can){el.dataset.time=t;el.onclick=function(){pickTime(this);};if(prevTime===t){el.classList.add('selected');foundPrev=true;}}ms.appendChild(el);
+mi+=30;if(mi>=60){hr++;mi=0;}}
+var eveningStart=Math.max(midMin,openMin);
+hr=Math.floor(eveningStart/60);mi=eveningStart%60;
+while(hr*60+mi<=closeMin){
+var t=String(hr).padStart(2,'0')+':'+String(mi).padStart(2,'0');
+var can=h.cancelled.includes(t)||isBooked(t)||isPast(t);
+var el=document.createElement('div');el.className='time-slot'+(can?' cancelled':'');el.textContent=(hr>12?hr-12:hr)+':'+String(mi).padStart(2,'0')+' '+(hr>=12?'م':'ص');
+if(!can){el.dataset.time=t;el.onclick=function(){pickTime(this);};if(prevTime===t){el.classList.add('selected');foundPrev=true;}}es.appendChild(el);
+mi+=30;if(mi>=60){hr++;mi=0;}}
+if(foundPrev){selTime=prevTime;document.getElementById('toConfirm').style.display='block';}
+else{selTime=null;document.getElementById('toConfirm').style.display='none';}
+}
+function pickTime(el){playSound('click');selTime=el.dataset.time;document.querySelectorAll('.time-slot').forEach(function(s){s.classList.remove('selected');});el.classList.add('selected');document.getElementById('toConfirm').style.display='block';}
+
+async function doConfirmAll(){
+if(!selSvcs.length||!selEmp||!selDate||!selTime){toast('الرجاء إكمال جميع الخطوات');return;}
+playSound('scissor');
+var savedDate={dk:selDate.dk,lbl:selDate.lbl,dateKey:selDate.dateKey};
+var savedTime=selTime;
+var savedEmp={name:selEmp.name,phone:selEmp.phone||''};
+try{
+var liveBookings=await fbFetch(FB_PATH+'/bookings','GET');
+if(liveBookings){
+var taken=Object.values(liveBookings).some(function(b){return b&&b.dateKey===savedDate.dateKey&&b.employee===savedEmp.name&&b.time===savedTime&&b.status!=='cancelled';});
+if(taken){toast('⚠️ هذا الموعد محجوز بالفعل! اختر وقتاً آخر');renderTimeSlots();return;}
+}
+}catch(e){console.warn('Double booking check failed:',e);}
+var total=selSvcs.reduce(function(s,x){return s+x.price;},0);
+var svcs=selSvcs.map(function(s){return s.name;}).join(' + ');
+var bk={id:Date.now(),dateKey:savedDate.dateKey,services:svcs,totalPrice:total,date:savedDate.lbl,time:savedTime,employee:savedEmp.name,employeePhone:savedEmp.phone,status:'pending',createdAt:new Date().toISOString(),customerName:userName,customerPhone:userPhone};
+userBookings.push(bk);ss('userBookings',userBookings);
+try{
+var r=await fbFetch(FB_PATH+'/bookings','POST',bk);
+if(r&&r.name){bk.fbKey=r.name;var uIdx=userBookings.findIndex(function(ub){return ub.id===bk.id;});if(uIdx>-1){userBookings[uIdx].fbKey=r.name;ss('userBookings',userBookings);}}
+}catch(e){console.warn('Firebase save failed:',e);}
+renderCustomerBookings();if(isAdmin)renderAdminBookings();
+var msg='🆕 حجز جديد في '+t.n+'!%0A%0A👤 '+userName+'%0A📱 '+(userPhone||'-')+'%0A✂️ '+svcs+'%0A📅 '+savedDate.lbl+'%0A⏰ '+savedTime+'%0A💰 '+total+' د.أ%0A👨‍🦱 '+savedEmp.name;
+document.getElementById('sumService').textContent=svcs;
+document.getElementById('sumDate').textContent=savedDate.lbl;
+document.getElementById('sumTime').textContent=savedTime;
+document.getElementById('sumBarber').textContent=savedEmp.name;
+document.getElementById('sumPrice').textContent=total+' د.أ';
+document.getElementById('confirmModal').dataset.waUrl='https://wa.me/'+t.ph.replace(/^0/,'962')+'?text='+msg;
+selEmp=null;selDate=null;selTime=null;
+document.getElementById('confirmModal').style.display='flex';
+goStep(2);renderEmps();
+}
+function closeCM(){
+var wa=document.getElementById('confirmModal').dataset.waUrl;
+document.getElementById('confirmModal').style.display='none';
+if(wa){window.open(wa,'_blank');}
+}
+function openWhatsApp(){
+var wa=document.getElementById('confirmModal').dataset.waUrl;
+document.getElementById('confirmModal').style.display='none';
+if(wa){window.open(wa,'_blank');}
+}
+
+async function cancelBooking(idOrFbKey){
+if(!confirm('هل أنت متأكد من إلغاء الحجز؟'))return;
+var el=document.querySelector('[data-key="'+idOrFbKey+'"]');
+if(el){el.style.transition='all 0.5s';el.style.opacity='0';el.style.transform='translateX(100px)';el.style.background='#fee';el.style.border='2px solid #dc3545';}
+var cancelled=gs('cancelled',[]);
+if(cancelled.indexOf(String(idOrFbKey))===-1)cancelled.push(String(idOrFbKey));
+ss('cancelled',cancelled);
+var foundFbKey=null;
+Object.keys(bookings||{}).forEach(function(k){
+if(bookings[k]&&(String(bookings[k].fbKey)===String(idOrFbKey)||String(bookings[k].id)===String(idOrFbKey))){
+bookings[k].status='cancelled';
+if(k.startsWith('-'))foundFbKey=k;
+}
+});
+if(!foundFbKey&&String(idOrFbKey).startsWith('-'))foundFbKey=idOrFbKey;
+if(foundFbKey){
+try{await fbFetch(FB_PATH+'/bookings/'+foundFbKey,'PATCH',{status:'cancelled'});bookings[foundFbKey].status='cancelled';}catch(e){console.error('Cancel PATCH failed:',e);toast('⚠️ فشل تحديث السحابة');}
+}
+var idx=userBookings.findIndex(function(b){return String(b.fbKey)===String(idOrFbKey)||String(b.id)===String(idOrFbKey);});
+if(idx>-1){userBookings[idx].status='cancelled';ss('userBookings',userBookings);}
+toast('تم إلغاء الحجز');
+setTimeout(function(){renderCustomerBookings();if(selDate)renderTimeSlots();},600);
+}
+async function adminCancelBooking(idOrFbKey){
+if(!confirm('إلغاء هذا الحجز؟'))return;
+var foundFbKey=null;
+Object.keys(bookings||{}).forEach(function(k){
+if(bookings[k]&&(String(bookings[k].fbKey)===String(idOrFbKey)||String(bookings[k].id)===String(idOrFbKey))){
+bookings[k].status='cancelled';
+if(k.startsWith('-'))foundFbKey=k;
+}
+});
+if(!foundFbKey&&String(idOrFbKey).startsWith('-'))foundFbKey=idOrFbKey;
+if(foundFbKey){
+try{await fbFetch(FB_PATH+'/bookings/'+foundFbKey,'PATCH',{status:'cancelled'});bookings[foundFbKey].status='cancelled';}catch(e){console.error('Admin cancel PATCH failed:',e);}
+}
+var cancelled=gs('cancelled',[]);
+if(cancelled.indexOf(String(idOrFbKey))===-1)cancelled.push(String(idOrFbKey));
+ss('cancelled',cancelled);
+var idx=userBookings.findIndex(function(b){return String(b.fbKey)===String(idOrFbKey)||String(b.id)===String(idOrFbKey);});
+if(idx>-1){userBookings[idx].status='cancelled';ss('userBookings',userBookings);}
+toast('تم إلغاء الحجز');
+renderAdminBookings();renderCustomerBookings();
+}
+async function adminCancelAll(){
+var pending=Object.keys(bookings||{}).filter(function(k){return bookings[k]&&bookings[k].status==='pending';});
+if(pending.length===0){toast('لا توجد حجوزات لإلغائها');return;}
+if(!confirm('إلغاء كل الحجوزات ('+pending.length+' حجز)؟'))return;
+var cancelled=gs('cancelled',[]);
+for(var i=0;i<pending.length;i++){
+var k=pending[i];
+await fbFetch(FB_PATH+'/bookings/'+k,'PATCH',{status:'cancelled'});
+if(bookings[k])bookings[k].status='cancelled';
+if(cancelled.indexOf(k)===-1)cancelled.push(k);
+}
+ss('cancelled',cancelled);
+toast('تم إلغاء '+pending.length+' حجز');
+renderAdminBookings();renderCustomerBookings();
+}
+function renderCustomerBookings(){
+var l=document.getElementById('myBookingsList');if(!l)return;
+var now=new Date();
+var cancelled=gs('cancelled',[]);
+var allBks=[];
+Object.keys(bookings||{}).forEach(function(k){
+var b=bookings[k];
+if(b&&b.customerPhone===userPhone&&b.status==='pending'){b._fbKey=k;allBks.push(b);}
+});
+userBookings.forEach(function(b){
+if(b.customerPhone!==userPhone||b.status!=='pending')return;
+var inFb=Object.values(bookings||{}).some(function(fb){return fb&&fb.id===b.id;});
+if(!inFb)allBks.push(b);
+});
+var seen={};
+var active=allBks.filter(function(b){
+var key=b._fbKey||b.fbKey||b.id;
+var keyStr=String(key);
+if(seen[keyStr])return false;seen[keyStr]=true;
+if(b.status!=='pending')return false;
+if(cancelled.indexOf(keyStr)!==-1)return false;
+if(b.fbKey&&cancelled.indexOf(b.fbKey)!==-1)return false;
+if(!b.dateKey||!b.time)return true;
+var bkTime=new Date(b.dateKey+'T'+b.time);var diffMs=bkTime-now;var diffMin=diffMs/60000;
+if(diffMin<-10){
+var patchKey=b._fbKey||b.fbKey;
+if(patchKey){fbFetch(FB_PATH+'/bookings/'+patchKey,'PATCH',{status:'cancelled'});if(bookings[patchKey])bookings[patchKey].status='cancelled';}
+var idx=userBookings.findIndex(function(ub){return ub.fbKey===patchKey||(ub.dateKey===b.dateKey&&ub.time===b.time&&ub.employee===b.employee);});
+if(idx>-1){userBookings[idx].status='cancelled';ss('userBookings',userBookings);}
+return false;
+}
+return diffMin>-10;
+});
+l.innerHTML=active.length===0?'<div style="text-align:center;opacity:0.5;padding:10px;font-size:13px;">لا توجد حجوزات نشطة</div>':active.map(function(b){var key=b._fbKey||b.fbKey||b.id;return '<div class="edit-item" data-key="'+key+'" style="flex-direction:column;align-items:stretch;"><div class="edit-item-info" style="margin-bottom:6px;"><div class="edit-item-name">'+(b.services||'')+'</div><div class="edit-item-detail">'+b.date+' - '+b.time+' - '+(b.employee||'')+' - '+(b.totalPrice||'')+' د.أ</div></div><button class="cancel-booking-btn" onclick="cancelBooking(\''+key+'\')">🗑️ إلغاء الحجز</button></div>';}).join('');
+}
+
+function doLogin(){userName=document.getElementById('customerName').value.trim();userPhone=document.getElementById('customerPhone').value.trim();if(!userName||!userPhone){toast('الرجاء إدخال الاسم ورقم الهاتف');return;}playSound('click');ss('userName',userName);ss('userPhone',userPhone);document.getElementById('loginPage').style.display='none';document.getElementById('mainApp').style.display='block';document.getElementById('bottomNav').style.display='flex';renderCustomer();}
+
+function switchNav(btn,screenId){playSound('click');document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});if(btn)btn.classList.add('active');document.getElementById(screenId).classList.add('active');if(screenId==='screen-account'){document.getElementById('profName').textContent=userName||'ضيف الصالون';document.getElementById('profPhone').textContent='📱 '+(userPhone||'-');renderCustomerBookings();}else if(screenId==='screen-main'){renderCal();}}
+function toggleView(){if(isAdmin)window.location.href='?salon='+slug;else window.location.href='?salon='+slug+'&admin=true';}
+
+function renderCustomer(){
+document.getElementById('mainTitle').textContent=t.n;document.getElementById('mainPhone').textContent='📞 '+t.ph;document.getElementById('loginSalonName').textContent=t.n;
+renderSvc();renderCats();goStep(1);selSvcs=[];selEmp=null;selDate=null;selTime=null;
+document.getElementById('toStep2').style.display='none';document.getElementById('toStep3').style.display='none';document.getElementById('toConfirm').style.display='none';
+if(userName){document.getElementById('customerName').value=userName;document.getElementById('customerPhone').value=userPhone;}
+if(userName&&userPhone){document.getElementById('loginPage').style.display='none';document.getElementById('mainApp').style.display='block';document.getElementById('bottomNav').style.display='flex';}
+}
+
+function renderAdmin(){
+try{
+document.getElementById('admin-view').style.display='block';document.getElementById('mainApp').style.display='none';document.getElementById('bottomNav').style.display='none';document.getElementById('loginPage').style.display='none';
+document.getElementById('adminTitle').textContent='⚙️ لوحة تحكم - '+t.n;document.getElementById('adminPhone').textContent='📞 '+t.ph;document.getElementById('adminDispName').textContent=t.n;document.getElementById('adminDispPhone').textContent=t.ph;
+if(!Array.isArray(services)||services.length===0){services=JSON.parse(JSON.stringify(ds));ss('services',services);}
+if(!Array.isArray(employees)||employees.length===0){employees=JSON.parse(JSON.stringify(de));ss('employees',employees);}
+if(!wh||typeof wh!=='object'||Object.keys(wh).length===0){wh=JSON.parse(JSON.stringify(dh));ss('hours',wh);}
+renderAdminServices();renderAdminEmployees();renderAdminHours();renderAdminBookings();
+}catch(e){console.error(e);}
+}
+function renderAdminServices(){try{document.getElementById('adminServicesList').innerHTML=services.map(function(s,i){return '<div class="edit-item"><div class="edit-item-info"><div class="edit-item-name">'+s.icon+' '+s.name+'</div><div class="edit-item-detail">'+s.price+' د.أ · '+s.category+'</div></div><div style="display:flex;gap:6px;"><button class="confirm-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px;" onclick="editSvc('+i+')">✏️</button><button class="delete-btn" onclick="delSvc('+i+')">🗑️</button></div></div>';}).join('');}catch(e){console.error(e);}}
+function addService(){var n=prompt('اسم الخدمة:');var p=parseInt(prompt('السعر:'));var icon=prompt('الإيموجي:','✂️');var cat=prompt('الفئة (haircut,beard,color,skincare,styling):','haircut');if(n&&p){services.push({icon:icon||'✂️',name:n,price:p,category:cat||'haircut'});so();renderAdminServices();toast('تمت الإضافة');}}
+function editSvc(i){var n=prompt('الاسم:',services[i].name);var p=parseInt(prompt('السعر:',services[i].price));var icon=prompt('الإيموجي:',services[i].icon);var cat=prompt('الفئة:',services[i].category);if(n&&p){services[i].name=n;services[i].price=p;services[i].icon=icon||services[i].icon;services[i].category=cat||services[i].category;so();renderAdminServices();toast('تم التحديث');}}
+function delSvc(i){if(confirm('حذف؟')){services.splice(i,1);so();renderAdminServices();toast('تم الحذف');}}
+function renderAdminEmployees(){try{document.getElementById('adminEmployeesList').innerHTML=employees.map(function(e,i){return '<div class="edit-item"><div class="edit-item-info"><div class="edit-item-name">'+e.icon+' '+e.name+'</div><div class="edit-item-detail">'+e.role+' ⭐ '+e.rating+(e.available===false?' 🔴 مشغول':' 🟢 متاح')+'</div></div><div style="display:flex;gap:6px;"><button class="confirm-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px;" onclick="editEmp('+i+')">✏️</button><button class="delete-btn" onclick="delEmp('+i+')">🗑️</button></div></div>';}).join('');}catch(e){console.error(e);}}
+function addEmployee(){var n=prompt('اسم الموظف:');var r=prompt('الدور:');var rating=parseFloat(prompt('التقييم:','4.8'));if(n){employees.push({name:n,role:r||'موظف',rating:rating||4.8,icon:n.charAt(0),phone:'',available:true});so();renderAdminEmployees();toast('تمت الإضافة');}}
+function editEmp(i){var n=prompt('الاسم:',employees[i].name);var r=prompt('الدور:',employees[i].role);if(n){employees[i].name=n;employees[i].role=r||employees[i].role;so();renderAdminEmployees();toast('تم التحديث');}}
+function delEmp(i){if(confirm('حذف؟')){employees.splice(i,1);so();renderAdminEmployees();toast('تم الحذف');}}
+function renderAdminHours(){try{var c=document.getElementById('adminHoursList');c.innerHTML=Object.keys(wh).map(function(day){var h=wh[day];var has=h.open&&h.open!=='';return '<div class="day-card"><div class="day-header"><div class="day-name">'+dAr[day]+'</div><button class="day-toggle '+(has?'on':'')+'" onclick="togDay(\''+day+'\')"></button></div>'+(has?'<div style="font-size:11px;color:#666;margin-bottom:6px;">⏰ '+h.open+' - '+h.close+'</div><div style="display:flex;gap:6px;margin-bottom:5px;"><button class="confirm-btn" style="width:auto;padding:4px 8px;margin:0;font-size:10px;" onclick="editDay(\''+day+'\')">✏️</button></div><div class="time-slots" style="gap:4px;">'+genAdminSlots(day,h)+'</div>':'<div style="color:var(--danger);font-size:12px;">🔒 مغلق</div>')+'</div>';}).join('');}catch(e){console.error('renderAdminHours',e);}}
+function genAdminSlots(day,h){
+try{
+var can=h.cancelled||[];var r='';
+if(!h.open||!h.close||typeof h.open!=='string'||typeof h.close!=='string')return '';
+var parts=h.open.split(':').map(Number);var oH=parts[0],oM=parts[1];
+parts=h.close.split(':').map(Number);var cH=parts[0],cM=parts[1];
+if(isNaN(oH)||isNaN(oM)||isNaN(cH)||isNaN(cM))return '';
+var hr=oH,mi=oM;
+function fmt(h,m){var ap=h>=12?'م':'ص';var h12=h%12||12;return String(h12).padStart(2,'0')+':'+String(m).padStart(2,'0')+' '+ap;}
+while(hr*60+mi<=cH*60+cM){var t=String(hr).padStart(2,'0')+':'+String(mi).padStart(2,'0');var isC=can.includes(t);r+='<div class="time-slot'+(isC?' cancelled':'')+'" onclick="togSlot(\''+day+'\',\''+t+'\')" style="font-size:10px;padding:4px 8px;">'+fmt(hr,mi)+'</div>';mi+=30;if(mi>=60){hr++;mi=0;}}return r;
+}catch(e){return '';}}
+function togDay(day){if(wh[day].open){wh[day].open='';wh[day].close='';wh[day].cancelled=[];}else{wh[day].open='09:00';wh[day].close='21:00';wh[day].cancelled=[];}so();renderAdminHours();}
+function editDay(day){
+var h=wh[day];if(!h.open){toast('اليوم مغلق، فعّله أولاً');return;}
+var slots=[];for(var hi=6;hi<=23;hi++){for(var mi=0;mi<60;mi+=30){slots.push(String(hi).padStart(2,'0')+':'+String(mi).padStart(2,'0'));}}
+function to12(t){var parts=t.split(':').map(Number);var ap=parts[0]>=12?'م':'ص';return(parts[0]%12||12)+':'+String(parts[1]).padStart(2,'0')+' '+ap;}
+var o=prompt('وقت الفتح (24 ساعة):\n'+slots.join(' , ')+'\n\nأمثلة: 09:00 = 9 ص | 14:00 = 2 ظ | 23:30 = 11:30 م',h.open);
+if(!o||!slots.includes(o)){toast('وقت غير صحيح');return;}
+var c=prompt('وقت الإغلاق (24 ساعة):\n'+slots.join(' , ')+'\n\nأمثلة: 21:00 = 9 م | 22:30 = 10:30 م | 23:30 = 11:30 م',h.close);
+if(!c||!slots.includes(c)){toast('وقت غير صحيح');return;}
+if(slots.indexOf(o)>=slots.indexOf(c)){toast('الإغلاق لازم يكون بعد الفتح');return;}
+h.open=o;h.close=c;h.cancelled=[];
+so();renderAdminHours();toast('✅ تم التحديث: '+to12(o)+' - '+to12(c));
+}
+function togSlot(day,time){var c=wh[day].cancelled;var i=c.indexOf(time);if(i>-1){c.splice(i,1);toast('تفعيل');}else{c.push(time);toast('إلغاء');}so();renderAdminHours();}
+function renderAdminBookings(){try{var cancelled=gs('cancelled',[]);var allBk=[];Object.keys(bookings||{}).forEach(function(k){var b=bookings[k];if(b&&b.status==='pending'){b._fbKey=k;allBk.push(b);}});userBookings.forEach(function(b){if(b.status==='pending'&&!b.fbKey){var inFb=Object.values(bookings||{}).some(function(fb){return fb&&fb.id===b.id;});if(!inFb)allBk.push(b);}});var seen=new Set();var uniq=[];allBk.forEach(function(b){var k=b._fbKey||b.fbKey||b.id;if(!seen.has(k)){seen.add(k);if(b.status==='pending'&&cancelled.indexOf(String(k))===-1)uniq.push(b);}});document.getElementById('adminBookingsList').innerHTML=uniq.length===0?'<div style="text-align:center;opacity:0.5;padding:10px;">لا توجد حجوزات</div>':uniq.map(function(b){var key=b._fbKey||b.fbKey||b.id;return '<div class="edit-item" style="flex-direction:column;align-items:stretch;"><div class="edit-item-info" style="margin-bottom:6px;"><div class="edit-item-name">'+String(b.customerName||'')+' - '+String(b.services||'')+'</div><div class="edit-item-detail">'+String(b.date||'')+' - '+String(b.time||'')+' - '+String(b.employee||'')+' - '+String(b.totalPrice||'')+' د.أ</div></div><div style="display:flex;gap:6px;margin-top:4px;"><button class="cancel-booking-btn" onclick="adminEditBooking(\''+String(key)+'\')" style="background:var(--primary-b);font-size:12px;">✏️ تعديل</button><button class="cancel-booking-btn" onclick="adminCancelBooking(\''+String(key)+'\')" style="font-size:12px;">🗑️ إلغاء</button></div></div>';}).join('');}catch(e){console.error('renderAdminBookings',e);}}
+function adminEditBooking(idOrFbKey){
+var bk=Object.values(bookings||{}).find(function(b){return(b.fbKey||b.id)==idOrFbKey;})||userBookings.find(function(b){return(b.fbKey||b.id)==idOrFbKey;});
+if(!bk){toast('⚠️ الحجز غير موجود');return;}
+var newTime=prompt('الوقت الجديد (مثال: 15:30):',bk.time);
+if(!newTime)return;
+var newDate=prompt('التاريخ الجديد (مثال: السبت):',bk.date);
+if(!newDate)return;
+if(idOrFbKey&&String(idOrFbKey).startsWith('-')){fbFetch(FB_PATH+'/bookings/'+idOrFbKey,'PATCH',{time:newTime,date:newDate});}
+var idx=userBookings.findIndex(function(b){return(b.fbKey||b.id)==idOrFbKey;});
+if(idx>-1){userBookings[idx].time=newTime;userBookings[idx].date=newDate;ss('userBookings',userBookings);}
+toast('✅ تم تعديل الحجز');
+renderAdminBookings();
+}
+function editAdminName(){var n=prompt('اسم الصالون:',t.n);if(n){t.n=n;ss('salonName',n);document.getElementById('mainTitle').textContent=n;document.getElementById('loginSalonName').textContent=n;document.getElementById('adminTitle').textContent='⚙️ لوحة تحكم - '+n;document.getElementById('adminDispName').textContent=n;fbFetch(FB_PATH,'PATCH',{salonName:n});toast('تم التحديث');}}
+function editAdminPhone(){var p=prompt('رقم الصالون:',t.ph);if(p){t.ph=p;ss('salonPhone',p);document.getElementById('mainPhone').textContent='📞 '+p;document.getElementById('adminPhone').textContent='📞 '+p;document.getElementById('adminDispPhone').textContent=p;fbFetch(FB_PATH,'PATCH',{salonPhone:p});toast('تم التحديث');}}
+function exportData(){var d={services:services,employees:employees,workingHours:wh,userBookings:userBookings,favorites:favorites,userName:userName,userPhone:userPhone};var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='salon-'+slug+'-data.json';a.click();toast('تم التصدير');}
+function resetData(){if(confirm('مسح كل البيانات؟')){localStorage.removeItem('salon_'+slug+'_services');localStorage.removeItem('salon_'+slug+'_employees');localStorage.removeItem('salon_'+slug+'_hours');localStorage.removeItem('salon_'+slug+'_userBookings');localStorage.removeItem('salon_'+slug+'_favorites');fbFetch(FB_PATH,'DELETE');location.reload();}}
+function showFavorites(){if(favorites.length===0){toast('لا توجد خدمات مفضلة');return;}toast('المفضلة: '+favorites.length+' خدمة');}
+function contactSalon(){window.open('https://wa.me/'+t.ph.replace(/^0/,'962')+'?text=مرحباً صالون '+encodeURIComponent(t.n)+'!','_blank');}
+
+window.toggleSvc=toggleSvc;window.filterCat=filterCat;window.goStep2=goStep2;window.pickEmp=pickEmp;window.goStep3=goStep3;window.selectCalDay=selectCalDay;window.pickTime=pickTime;window.doConfirmAll=doConfirmAll;window.closeCM=closeCM;window.openWhatsApp=openWhatsApp;window.doLogin=doLogin;window.switchNav=switchNav;window.toggleView=toggleView;window.addService=addService;window.editSvc=editSvc;window.delSvc=delSvc;window.addEmployee=addEmployee;window.editEmp=editEmp;window.delEmp=delEmp;window.togDay=togDay;window.editDay=editDay;window.togSlot=togSlot;window.exportData=exportData;window.resetData=resetData;window.showFavorites=showFavorites;window.contactSalon=contactSalon;window.editAdminName=editAdminName;window.editAdminPhone=editAdminPhone;window.cancelBooking=cancelBooking;window.adminCancelBooking=adminCancelBooking;window.adminCancelAll=adminCancelAll;window.adminEditBooking=adminEditBooking;
+
+function initApp(){appReady=true;
+try{
+if(isAdmin){document.getElementById('admin-view').style.display='block';document.getElementById('bottomNav').style.display='none';renderAdmin();}
+else{if(!userName||!userPhone){document.getElementById('loginPage').style.display='flex';}else{document.getElementById('loginPage').style.display='none';document.getElementById('mainApp').style.display='block';document.getElementById('bottomNav').style.display='flex';renderCustomer();}}
+}catch(e){console.error('initApp error',e);}
+}
+try{
+if(userName)document.getElementById('customerName').value=userName;
+if(userPhone)document.getElementById('customerPhone').value=userPhone;
+initApp();
+}catch(e){console.error('startup error',e);}
+})();
+</script>
+</body>
+</html>

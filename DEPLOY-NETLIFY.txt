@@ -1,0 +1,22 @@
+=== خطوات النشر على Netlify (مجاني) ===
+
+الخطوة 1: سجّل في Netlify
+1. اذهب到 https://app.netlify.com
+2. سجّل بحساب Google أو GitHub
+
+الخطوة 2: رفع الموقع
+1. في Netlify Dashboard، اضغط "Add new site" → "Deploy manually"
+2. اضغط "Browse to upload" واختر المجلد:
+   C:\Users\user\Desktop\salon-luxury
+3. اضغط "Deploy site"
+
+الخطوة 3: بعد الرفع
+- ستحصل على رابط مثل: https://random-name.netlify.app
+- هذا الرابط يعمل على 4G في الأردن
+
+الخطوة 4: تثبيت الرابط (اختياري)
+1. في Netlify Dashboard → Site settings → Change site name
+2. غيّر الاسم إلى: salon-lucky 或 salon-nidal
+3. الرابط الجديد: https://salon-nidal.netlify.app
+
+ملاحظة: Functions (proxy) ستعمل تلقائياً إذا رفعت المجلد الصحيح.
