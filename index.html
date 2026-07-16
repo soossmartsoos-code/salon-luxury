@@ -270,6 +270,7 @@ styling:'<path d="M30 70 L30 40 Q30 25 50 25 Q70 25 70 40 L70 70" stroke="#DC143
 return m[type]||m.haircut;}
 
 var FB_PROXY=window.location.hostname.includes('netlify')?'/.netlify/functions/proxy':'/api/proxy';
+var FB_DIRECT='https://salon-luxury-1b55b-default-rtdb.europe-west1.firebasedatabase.app';
 var FB_PATH='/salons/'+slug;
 var appReady=false;var fbHash='';
 var bookings={};var fbOnline=false,fbChecked=false,fbRetryCount=0,fbRetryMax=5,fbPollTimer=null;
@@ -283,7 +284,13 @@ var isGet=!method||method==='GET';
 var url=FB_PROXY+'?path='+encodeURIComponent(path)+(isGet?'&_t='+Date.now():'')+(method&&method!=='GET'?'&method='+method:'');
 var opts={method:method||'GET',headers:{'Content-Type':'application/json'},cache:'no-store'};
 if(body)opts.body=JSON.stringify(body);
-return fetch(url,opts).then(function(r){return r.text();}).then(function(txt){try{return JSON.parse(txt);}catch(e){return null;}}).catch(function(e){console.error('fbFetch error:',e);return null;});}
+return fetch(url,opts).then(function(r){return r.text();}).then(function(txt){try{return JSON.parse(txt);}catch(e){return null;}}).catch(function(e){
+console.warn('Proxy failed, trying direct:',e);
+var dUrl=FB_DIRECT+path+'.json'+(isGet?'?_t='+Date.now():'');
+var dOpts={method:method||'GET',headers:{'Content-Type':'application/json'},cache:'no-store'};
+if(body)dOpts.body=JSON.stringify(body);
+return fetch(dUrl,dOpts).then(function(r){return r.text();}).then(function(txt){try{return JSON.parse(txt);}catch(e){return null;}}).catch(function(e2){console.error('Direct FB failed:',e2);return null;});
+});}
 
 function initFB(){
 var lsHours=gs('hours',null);var lsSvc=gs('services',null);var lsEmp=gs('employees',null);
